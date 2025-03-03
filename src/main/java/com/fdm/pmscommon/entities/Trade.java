@@ -58,5 +58,5 @@ public class Trade {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
-    private Account accountId;
+    private Account account;
 }

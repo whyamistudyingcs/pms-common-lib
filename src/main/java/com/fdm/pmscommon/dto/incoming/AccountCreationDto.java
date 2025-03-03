@@ -1,4 +1,4 @@
-package com.fdm.pmscommon.dto.requests;
+package com.fdm.pmscommon.dto.incoming;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

@@ -1,4 +1,4 @@
-package com.fdm.pmscommon.dto.requests;
+package com.fdm.pmscommon.dto.incoming;
 
 import java.util.List;
 import java.util.UUID;
