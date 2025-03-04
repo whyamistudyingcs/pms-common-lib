@@ -14,6 +14,8 @@ import lombok.Data;
 @Data
 public class TradeDto {
 
+    private UUID tradeId;
+
     @NotBlank(message = "External Order ID cannot be empty")
     private String extOrderId;
 

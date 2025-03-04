@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import com.fdm.pmscommon.dto.TradeDto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -14,6 +14,6 @@ public class TradeUploadRequest {
     @NotEmpty
     private List<TradeDto> tradeList;
 
-    @NotBlank
+    @NotNull
     private UUID accountId;
 }
