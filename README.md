@@ -2,12 +2,11 @@
 
 A shared library containing common entities, DTOs, and repositories for the PMS (Portfolio Management System) project.
 
+
 ## Project Structure
 
 ```
-simTrade/
-├── pom.xml                 # Parent POM
-├── pms-common/            # Shared library
+── pms-common/            # Shared library
 │   ├── pom.xml
 │   └── src/
 │       └── main/
@@ -15,155 +14,27 @@ simTrade/
 │               └── com/
 │                   └── fdm/
 │                       └── pmscommon/
-│                           ├── entities/
-│                           ├── dto/
-│                           └── repositories/
-├── microservice1/         # Client service
-│   └── pom.xml
-└── microservice2/         # Client service
-    └── pom.xml
+│                           ├── entities/     # Domain model entities
+│                           ├── dto/          # Data Transfer Objects
+│                           └── repositories/ # Data access layer
+│                           └── config/       # RabbitMQ configuration
 ```
+
+## Package Details
+
+### RabbitMQ configuration hints: 
+- Exchange: An entity in RabbitMQ where messages are sent. It routes messages to one or more queues based on the exchange type and bindings. Types include Direct, Fanout, Topic, and Headers exchanges.
+
+- Queue: A buffer that stores messages until they are consumed by applications. Queues can be durable or transient. Durable queues persist messages to disk and survive broker restarts.
+
+- Binding: A link between an exchange and a queue. It specifies how messages are routed from the exchange to the queue using a binding key.
+
+- Routing key: An attribute of a message that determines which queues it should be routed to. It is compared with the binding key of queues.
+
+- Caveat: Message lost handling and node failure handling are not implemented yet. Consider implementing durable queues, publisher confirms, dead letter exchanges (DLX), and clustering to handle these scenarios. Check out for future enhancement (https://www.rabbitmq.com/docs/partitions).
 
 ## Setup
 
-### Parent POM Configuration
-
-```xml
-// filepath: /Users/dameningen/Desktop/FDM_training/simTrade/pom.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version>
-        <relativePath/>
-    </parent>
-
-    <groupId>com.fdm</groupId>
-    <artifactId>pms-parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>pms-parent</name>
-    <description>Parent POM for PMS Project</description>
-
-    <properties>
-        <java.version>17</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-        <hibernate.version>6.4.1.Final</hibernate.version>
-    </properties>
-
-    <modules>
-        <module>pms-common</module>
-        <module>pmsuibackend</module>
-    </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.fdm</groupId>
-                <artifactId>pms-common</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <pluginManagement>
-            <plugins>
-                <!-- Spring Boot Maven Plugin -->
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <excludes>
-                            <exclude>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                            </exclude>
-                        </excludes>
-                    </configuration>
-                </plugin>
-
-                <!-- Maven Compiler Plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <annotationProcessorPaths>
-                            <path>
-                                <groupId>org.projectlombok</groupId>
-                                <artifactId>lombok</artifactId>
-                                <version>${lombok.version}</version>
-                            </path>
-                        </annotationProcessorPaths>
-                    </configuration>
-                </plugin>
-
-                <!-- Spotless Plugin for code formatting -->
-                <plugin>
-                    <groupId>com.diffplug.spotless</groupId>
-                    <artifactId>spotless-maven-plugin</artifactId>
-                    <version>2.40.0</version>
-                    <configuration>
-                        <java>
-                            <googleJavaFormat>
-                                <version>1.17.0</version>
-                                <style>GOOGLE</style>
-                            </googleJavaFormat>
-                            <removeUnusedImports/>
-                        </java>
-                    </configuration>
-                </plugin>
-
-            </plugins>
-        </pluginManagement>
-    </build>
-</project>
-```
-
-### Library POM Configuration
-
-```xml
-// filepath: /Users/dameningen/Desktop/FDM_training/simTrade/pms-common/pom.xml
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0">
-    <modelVersion>4.0.0</modelVersion>
-    
-    <parent>
-        <groupId>com.fdm</groupId>
-        <artifactId>pms-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-
-    <artifactId>pms-common</artifactId>
-    <name>pms-common</name>
-    <description>Common library for PMS</description>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>
-</project>
-```
 
 ### Client Service Configuration
 
@@ -173,26 +44,28 @@ simTrade/
 <project xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     
-    <parent>
-        <groupId>com.fdm</groupId>
-        <artifactId>pms-parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
-
+    .... Other code .....
     <artifactId>microservice1</artifactId>
     
     <dependencies>
         <dependency>
-            <groupId>com.fdm</groupId>
-            <artifactId>pms-common</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+			<groupId>com.fdm</groupId>
+			<artifactId>pms-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-data-jpa</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+        ..... Other dependencies ....
     </dependencies>
 </project>
 ```
 
-## Usage in Client Services
+### Usage in Client Services
 
 Enable component scanning in your Spring Boot application:
 
@@ -210,6 +83,15 @@ public class Microservice1Application {
 ```
 
 ## Building and Installing
+
+To make the library available for other microservices:
+
+```bash
+cd pms-common
+mvn clean install
+```
+
+This will install the library to your local Maven repository (~/.m2).
 
 ```bash
 # Install the common library
