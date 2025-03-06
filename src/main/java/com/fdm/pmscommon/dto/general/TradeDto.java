@@ -1,4 +1,4 @@
-package com.fdm.pmscommon.dto;
+package com.fdm.pmscommon.dto.general;
 
 import java.util.UUID;
 

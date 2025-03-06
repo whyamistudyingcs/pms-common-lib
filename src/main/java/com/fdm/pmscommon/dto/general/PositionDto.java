@@ -1,4 +1,4 @@
-package com.fdm.pmscommon.dto;
+package com.fdm.pmscommon.dto.general;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

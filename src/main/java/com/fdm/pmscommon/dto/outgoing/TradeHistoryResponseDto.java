@@ -2,7 +2,7 @@ package com.fdm.pmscommon.dto.outgoing;
 
 import java.util.List;
 
-import com.fdm.pmscommon.dto.TradeDto;
+import com.fdm.pmscommon.dto.general.TradeDto;
 
 import lombok.Data;
 

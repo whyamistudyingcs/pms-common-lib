@@ -44,7 +44,7 @@ A shared library containing common entities, DTOs, and repositories for the PMS 
 <project xmlns="http://maven.apache.org/POM/4.0.0">
     <modelVersion>4.0.0</modelVersion>
     
-    .... Other code .....
+    <!-- Other code ......-->
     <artifactId>microservice1</artifactId>
     
     <dependencies>
@@ -60,8 +60,10 @@ A shared library containing common entities, DTOs, and repositories for the PMS 
 			</exclusions>
 		</dependency>
 
-        ..... Other dependencies ....
+        <!-- Other dependencies ....-->
     </dependencies>
+
+    <!-- Other code .....-->
 </project>
 ```
 

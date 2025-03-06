@@ -1,4 +1,6 @@
-package com.fdm.pmscommon.dto;
+package com.fdm.pmscommon.dto.general;
+
+import com.fdm.pmscommon.dto.general.TradeDto;
 
 import lombok.Data;
 

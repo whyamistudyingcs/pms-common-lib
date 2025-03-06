@@ -1,8 +1,10 @@
 package com.fdm.pmscommon.dto.outgoing;
 
 import lombok.Data;
-import com.fdm.pmscommon.dto.PositionDto;
+
 import java.util.List;
+
+import com.fdm.pmscommon.dto.general.PositionDto;
 
 @Data
 public class PositionResponse {

@@ -2,7 +2,7 @@ package com.fdm.pmscommon.dto.outgoing;
 
 import java.util.List;
 
-import com.fdm.pmscommon.dto.TradeResult;
+import com.fdm.pmscommon.dto.general.TradeResult;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
